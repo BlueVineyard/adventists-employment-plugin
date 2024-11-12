@@ -1,0 +1,120 @@
+#top-blogs * {
+  box-sizing: border-box;
+}
+
+#top-blogs .top-blogs-container {
+  display: flex;
+  /* column-gap: 32px; */
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+#top-blogs .blog-excerpt {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 148%;
+  margin-top: 8px;
+  margin-bottom: 0;
+}
+#top-blogs .blog-date {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 148%;
+  margin-bottom: 6px;
+  color: #3d3935;
+}
+
+/**
+* Top Blog - Left CSS
+*/
+#top-blogs .top-blog-left {
+  width: 100%;
+  max-width: calc(680px - 32px);
+  box-sizing: border-box;
+}
+#top-blogs .top-blog-left .blog-post .blog-image {
+  margin-bottom: 24px;
+  height: 420px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+#top-blogs .top-blog-left .blog-post .blog-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+#top-blogs .top-blog-left .blog-post .blog-content .blog-title {
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 148%;
+  color: #101010;
+}
+#top-blogs .top-blog-left .blog-post .blog-content .read-more {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 148%;
+  color: #fff;
+  padding: 12px 24px;
+  background-color: #ff8200;
+  border: 1px solid #ff8200;
+  border-radius: 10px;
+  margin-top: 30px;
+  display: inline-block;
+}
+#top-blogs .top-blog-left .blog-post .blog-content .read-more:hover {
+  background-color: #fff;
+  color: #ff8200;
+}
+
+/**
+* Top Blog - Right CSS
+*/
+#top-blogs .top-blog-right {
+  width: 100%;
+  max-width: 568px;
+}
+#top-blogs .top-blog-right .blog-post {
+  display: flex;
+  align-items: center;
+  column-gap: 20px;
+}
+#top-blogs .top-blog-right .blog-post .blog-image {
+  width: 100%;
+  max-width: 248px;
+  height: 172px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+#top-blogs .top-blog-right .blog-post .blog-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+#top-blogs .top-blog-right .blog-post .blog-content .blog-title {
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 124%;
+  color: #101010;
+}
+#top-blogs .top-blog-right .blog-post .blog-content .read-more {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 148%;
+  color: #ff8200;
+  margin-top: 20px;
+  display: inline-block;
+}
+#top-blogs .top-blog-right .blog-post .blog-content .read-more:hover {
+  color: #101010;
+}
+
+#top-blogs .top-blog-right hr {
+  width: 100%;
+  background-color: #dedede;
+  border: 1px solid #dedede;
+  margin-top: 24px;
+  margin-bottom: 24px;
+}
+#top-blogs .top-blog-right hr:last-child {
+  display: none;
+}

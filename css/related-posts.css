@@ -1,0 +1,187 @@
+.ae_related_job_card {
+  background-color: #fff;
+  padding: 24px;
+  border-radius: 8px;
+  border: 1px solid #e4e4e4;
+  position: relative;
+  margin-bottom: 20px;
+}
+.ae_related_job_card-top {
+  display: flex;
+  align-items: center;
+  column-gap: 16px;
+  margin-bottom: 24px;
+}
+.ae_related_job_card-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.ae_related_job_card__img {
+  width: 56px;
+  height: 56px;
+  object-fit: cover;
+}
+.ae_related_job_card__title {
+  color: #101010;
+  font-size: 20px;
+  font-family: "Noto Sans", sans-serif;
+  font-weight: 600;
+  margin: 0;
+  margin-bottom: 4px;
+}
+.ae_related_job_card__title a {
+  color: #101010;
+  text-decoration: none;
+}
+.ae_related_job_card__title a:focus {
+  outline: 0;
+}
+.ae_related_job_card__company {
+  color: #3d3935;
+  font-size: 14px;
+  font-family: "Noto Sans", sans-serif;
+  font-weight: 400;
+}
+.ae_related_job_card__type {
+  font-size: 14px;
+  font-family: "Noto Sans", sans-serif;
+  font-weight: 400;
+}
+.ae_related_job_card__location {
+  display: flex;
+  align-items: center;
+  color: #3d3935;
+  column-gap: 5px;
+  margin-bottom: 16px;
+  font-size: 16px;
+  font-family: "Noto Sans", sans-serif;
+  font-weight: 400;
+}
+.ae_related_job_card__location span {
+  width: 100%;
+  max-width: calc(100% - 25px);
+}
+.ae_related_job_card__salary {
+  display: flex;
+  align-items: center;
+  color: #3d3935;
+  column-gap: 5px;
+  font-size: 16px;
+  font-family: "Noto Sans", sans-serif;
+  font-weight: 400;
+}
+.ae_related_job_card__salary span {
+  width: 100%;
+  max-width: calc(100% - 25px);
+}
+.ae_related_job_card hr {
+  border: 1px solid #e4e4e4;
+  margin-top: 24px;
+  margin-bottom: 16px;
+}
+.ae_related_job_card__published {
+  display: flex;
+  align-items: center;
+  color: #d83636;
+  column-gap: 6px;
+  font-size: 16px;
+  font-family: "Noto Sans", sans-serif;
+  font-weight: 400;
+}
+.ae_related_job_card__modified {
+  color: #757b8a;
+  font-size: 16px;
+  font-family: "Noto Sans", sans-serif;
+  font-weight: 400;
+}
+.ae_related_job_card svg {
+  width: 20px;
+}
+.ae_related_job_card-bookmark_form {
+  position: absolute;
+  right: 4px;
+  top: 4px;
+}
+.ae_related_job_card-bookmark_form .add-bookmark {
+  position: relative;
+  margin-left: auto;
+  display: block;
+  width: fit-content;
+}
+.ae_related_job_card-bookmark_form .add-bookmark:hover svg {
+  fill: #ff8200;
+}
+.ae_related_job_card-bookmark_form .add-bookmark:hover svg path {
+  stroke: #ff8200;
+}
+.ae_related_job_card-bookmark_form.has-bookmark .add-bookmark svg {
+  fill: #ff8200;
+}
+.ae_related_job_card-bookmark_form.has-bookmark .add-bookmark svg path {
+  stroke: #ff8200;
+}
+.ae_related_job_card-bookmark_form .remove-bookmark {
+  position: relative;
+  padding: 10px 30px;
+  font-family: "Noto Sans", sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  background-color: #ff0000;
+  border: 1px solid #ff0000;
+  cursor: pointer;
+  color: #fff;
+  border-radius: 10px;
+  display: block;
+  width: fit-content;
+  margin-top: 10px;
+}
+.ae_related_job_card-bookmark_form .tooltip {
+  position: absolute;
+  background-color: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  display: none;
+  z-index: 1000;
+  min-width: 200px;
+  text-align: center;
+}
+.ae_related_job_card-bookmark_form .tooltip::after {
+  content: "";
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent #333 transparent;
+}
+.ae_related_job_card-bookmark_form .form-group {
+  display: flex;
+  flex-direction: column;
+}
+.ae_related_job_card-bookmark_form .form-group:first-child {
+  margin-bottom: 16px;
+}
+.ae_related_job_card-bookmark_form .form-group #bookmark_notes:focus-visible {
+  outline: 1px solid #ff8000;
+}
+.ae_related_job_card-bookmark_form .submit-bookmark-button {
+  padding: 10px 30px;
+  font-family: "Noto Sans", sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  background-color: #ff8200;
+  border: 1px solid #ff8200;
+  cursor: pointer;
+  color: #fff;
+  border-radius: 10px;
+  display: block;
+  width: fit-content;
+}
+.ae_related_job_card-bookmark_form .bookmark-details {
+  background: #e4e4e4;
+  padding: 20px;
+}

@@ -1,0 +1,334 @@
+.spacer-20 {
+  display: block;
+  height: 20px;
+}
+
+#add_resume {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+#add_resume .back_btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  column-gap: 21px;
+  font-size: 18px;
+  line-height: 148%;
+  font-weight: 500;
+  color: #ff8200;
+  margin-bottom: 16px;
+}
+
+#add_resume h1 {
+  font-size: 32px;
+  line-height: 132%;
+  color: #101010;
+  margin-bottom: 40px;
+}
+
+#add_resume .add_resume-form {
+  width: 100%;
+  max-width: calc(100% - 408px - 20px);
+}
+
+#add_resume .add_resume-form .ae_form_card {
+  padding: 24px 28px;
+  border: 1px solid #e4e4e4;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  row-gap: 24px;
+}
+
+#add_resume .add_resume-form .ae_form_card .ae_form_card-title {
+  font-size: 24px;
+  color: #101010;
+  line-height: 148%;
+  font-weight: 600;
+}
+
+#add_resume .add_resume-form fieldset {
+  display: flex;
+  flex-direction: column;
+  row-gap: 8px;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+#add_resume .add_resume-form .half_field {
+  max-width: calc(50% - 8px);
+}
+
+#add_resume .add_resume-form fieldset .ae_label {
+  font-size: 18px;
+  font-weight: 600;
+  color: #101010;
+  line-height: 148%;
+  width: 100%;
+}
+
+#add_resume .add_resume-form fieldset .ae_input {
+  font-size: 18px;
+  font-weight: 400;
+  color: #636363;
+  line-height: 148%;
+  background-color: #eeeeee;
+  border: 0;
+  border-radius: 10px;
+  padding: 10px 16px;
+}
+
+#add_resume .add_resume-form .add_resume-form-btns {
+  margin-top: 20px;
+}
+
+#add_resume .add_resume-form .add_resume-form-btns input[type="submit"] {
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 148%;
+  color: #fff;
+  background-color: #ff8200;
+  border: 1px solid #ff8200;
+  border-radius: 10px;
+  padding: 10px 24px;
+  cursor: pointer;
+  transition: 0.3s all ease-in-out;
+}
+
+#add_resume .add_resume-form .add_resume-form-btns input[type="submit"]:hover {
+  color: #ff8200;
+  background-color: #fff;
+  border: 1px solid #ff8200;
+}
+
+#add_resume .add_resume-form .add_resume-form-btns .cancel-btn {
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 148%;
+  color: #ff8200;
+  background-color: #fff;
+  border: 1px solid #ff8200;
+  border-radius: 10px;
+  padding: 10px 24px;
+  cursor: pointer;
+  transition: 0.3s all ease-in-out;
+}
+
+#add_resume .add_resume-form .add_resume-form-btns .cancel-btn:hover {
+  color: #fff;
+  background-color: #ff8200;
+  border: 1px solid #ff8200;
+}
+
+#add_resume .add_resume-form fieldset .ae_input:focus-visible {
+  outline: 1px solid #ff8200;
+}
+
+#add_resume
+  .select2-container--default.select2-container--focus
+  .select2-selection--multiple {
+  border: solid #ff8200 1px;
+  outline: 0;
+}
+
+#add_resume
+  .select2-container--default
+  .select2-results__option--highlighted[aria-selected] {
+  background-color: #ff8200;
+  color: white;
+}
+
+#add_resume .select2-dropdown {
+  border: 1px solid #ff8200;
+}
+
+/**
+ * Candidate Experience Styles
+ */
+#add_resume #careerHistory .ae_form_card-title {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#add_resume #careerHistory .ae_form_card-title #add-experience {
+  font-size: 18px;
+  line-height: 148%;
+  font-weight: 600;
+  color: #ff8200;
+}
+
+#add_resume #careerHistory #career-history-repeater {
+  width: 100%;
+}
+
+#add_resume #careerHistory #career-history-repeater .career-history-entry {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  row-gap: 24px;
+  border: 1px solid #e4e4e4;
+  margin-bottom: 30px;
+  padding: 24px;
+  border-radius: 10px;
+}
+
+#add_resume
+  #careerHistory
+  #career-history-repeater
+  .career-history-entry:last-child {
+  margin-bottom: 0px;
+}
+
+/**
+ * Candidate Education Styles
+ */
+#add_resume #education .ae_form_card-title {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#add_resume #education .ae_form_card-title #add-education {
+  font-size: 18px;
+  line-height: 148%;
+  font-weight: 600;
+  color: #ff8200;
+}
+
+#add_resume #education #education-history-repeater {
+  width: 100%;
+}
+
+#add_resume #education #education-history-repeater .education-history-entry {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  row-gap: 24px;
+  border: 1px solid #e4e4e4;
+  margin-bottom: 30px;
+  padding: 24px;
+  border-radius: 10px;
+}
+
+#add_resume
+  #education
+  #education-history-repeater
+  .education-history-entry:last-child {
+  margin-bottom: 0px;
+}
+
+/**
+ * Candidate Certification Styles
+ */
+#add_resume #lisencesCertifications .ae_form_card-title {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#add_resume #lisencesCertifications .ae_form_card-title #add-certification {
+  font-size: 18px;
+  line-height: 148%;
+  font-weight: 600;
+  color: #ff8200;
+}
+
+#add_resume #lisencesCertifications #certifications-history-repeater {
+  width: 100%;
+}
+
+#add_resume
+  #lisencesCertifications
+  #certifications-history-repeater
+  .certifications-history-entry {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  row-gap: 24px;
+  border: 1px solid #e4e4e4;
+  margin-bottom: 30px;
+  padding: 24px;
+  border-radius: 10px;
+}
+
+#add_resume
+  #lisencesCertifications
+  #certifications-history-repeater
+  .certifications-history-entry:last-child {
+  margin-bottom: 0px;
+}
+
+/**
+ * Candidate Skill Styles
+ */
+.skill-tag {
+  display: inline-block;
+  background-color: #f2f2f2;
+  padding: 5px 10px;
+  margin: 5px;
+  border-radius: 3px;
+  font-size: 14px;
+}
+.skill-tag a {
+  margin-left: 10px;
+  color: #ff8200;
+  text-decoration: none;
+}
+
+/**
+ * Add Resume Nav Styles
+ */
+#add_resume .add_resume-nav {
+  width: 100%;
+  max-width: 408px;
+  border: 1px solid #e4e4e4;
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+#add_resume .add_resume-nav-link {
+  width: 100%;
+  padding: 18px 0 18px 28px;
+  position: relative;
+  border-bottom: 1px solid #e4e4e4;
+
+  font-size: 16px;
+  font-weight: 600;
+  color: #101010;
+}
+
+#add_resume .add_resume-nav-link:hover {
+  color: #ff8200;
+}
+
+#add_resume .add_resume-nav-link:last-child {
+  border-bottom: 0px;
+}
+
+#add_resume .add_resume-nav-link.active::before,
+#add_resume .add_resume-nav-link:hover::before {
+  content: "";
+  position: absolute;
+  width: 4px;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: #ff8200;
+}
