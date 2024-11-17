@@ -169,3 +169,11 @@
   left: 0;
   background-color: #ff8200;
 }
+
+#company_logo_preview {
+  width: 100%;
+  max-width: 100px;
+}
+#company_logo_preview img {
+  width: 100%;
+}

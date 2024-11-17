@@ -15,6 +15,10 @@ class JobListingForm
         // Hooks for AJAX form handling
         add_action('wp_ajax_nopriv_submit_job_listing_ajax', [$this, 'handle_form_submission_ajax']);
         add_action('wp_ajax_submit_job_listing_ajax', [$this, 'handle_form_submission_ajax']);
+
+        // Add AJAX action to fetch Employers
+        add_action('wp_ajax_fetch_employer_details', [$this, 'fetch_employer_details']);
+        add_action('wp_ajax_nopriv_fetch_employer_details', [$this, 'fetch_employer_details']);
     }
 
     public function render_form($atts)
@@ -64,13 +68,9 @@ class JobListingForm
         $selected_job_category = !empty($selected_job_category) ? $selected_job_category[0] : '';  // Select the first term if available
 
         // Retrieve selected job location(s) from the ACF taxonomy field
-        $selected_locations = get_field('location', $job_id);
+        $selected_locations =  wp_get_post_terms($job_id, 'location', ['fields' => 'ids']);
 
-        if (!empty($selected_locations) && is_array($selected_locations)) {
-            $selected_location = $selected_locations[0]; // Get the first location term ID
-        } else {
-            $selected_location = ''; // Default to an empty string if no locations are found
-        }
+
 
 
 
@@ -121,7 +121,7 @@ class JobListingForm
                                 $locations = get_terms(['taxonomy' => 'location', 'hide_empty' => false]);
                                 foreach ($locations as $location) {
                                 ?>
-                                    <option value="<?php echo esc_attr($location->term_id); ?>" <?php selected($selected_location, $location->term_id); ?>>
+                                    <option value="<?php echo esc_attr($location->term_id); ?>" <?php selected(in_array($location->term_id, $selected_locations)); ?>>
                                         <?php echo esc_html($location->name); ?>
                                     </option>
                                 <?php
@@ -323,28 +323,45 @@ class JobListingForm
 
                     <div id="companyDetails" class="ae_form_card">
                         <h4 class="ae_form_card-title">Company Details</h4>
+
+                        <!-- Employer Dropdown -->
+                        <fieldset class="fieldset-employer">
+                            <label for="employer" class="ae_label"><?php esc_html_e('Select Employer', 'wp-job-manager'); ?></label>
+                            <select name="employer" id="employer" class="ae_input">
+                                <option value=""><?php esc_html_e('Select an Employer', 'wp-job-manager'); ?></option>
+                                <?php
+                                $employers = get_posts([
+                                    'post_type'   => 'employer-dashboard',
+                                    'post_status' => 'publish',
+                                    'numberposts' => -1,
+                                ]);
+                                foreach ($employers as $employer) {
+                                    $employer_name = get_field('company_name', $employer->ID);
+                                    echo '<option value="' . esc_attr($employer->ID) . '">' . esc_html($employer_name) . '</option>';
+                                }
+                                ?>
+                            </select>
+                        </fieldset>
+
                         <!-- Company Logo Upload Field -->
                         <fieldset class="fieldset-company_logo">
-                            <label for="company_logo" class="ae_label"><?php esc_html_e('Company Logo', 'wp-job-manager'); ?></label>
-                            <?php
-                            if (has_post_thumbnail($job_id)) {
-                                echo get_the_post_thumbnail($job_id, 'full');
-                                echo '<input type="hidden" name="company_logo_current" value="' . get_post_thumbnail_id($job_id) . '" />';
-                            }
-                            ?>
-                            <input type="file" name="company_logo" id="company_logo" accept="image/jpeg,image/png" />
+                            <label class="ae_label"><?php esc_html_e('Employer Logo', 'wp-job-manager'); ?></label>
+                            <div id="company_logo_preview">
+                                <?php
+                                if (has_post_thumbnail($job_id)) {
+                                    echo get_the_post_thumbnail($job_id, 'full');
+                                    echo '<input type="hidden" name="company_logo_current" value="' . get_post_thumbnail_id($job_id) . '" />';
+                                }
+                                ?>
+                            </div>
                         </fieldset>
-
-                        <!-- Company Name Field -->
-                        <fieldset class="fieldset-company_name fieldset-type-text">
-                            <label for="company_name" class="ae_label"><?php esc_html_e('Company Name', 'wp-job-manager'); ?></label>
-                            <input type="text" name="company_name" id="company_name" class="ae_input" value="<?php echo esc_attr($company_name); ?>" />
+                        <fieldset class="fieldset-company_name half_field">
+                            <label class="ae_label"><?php esc_html_e('Employer Name', 'wp-job-manager'); ?></label>
+                            <input type="text" name="company_name" id="company_name" class="ae_input" value="<?php echo esc_attr($company_name); ?>" readonly />
                         </fieldset>
-
-                        <!-- Company Website Field (Optional) -->
-                        <fieldset class="fieldset-company_website fieldset-type-url">
-                            <label for="company_website" class="ae_label"><?php esc_html_e('Company Website', 'wp-job-manager'); ?> <small><?php esc_html_e('(optional)', 'wp-job-manager'); ?></small></label>
-                            <input type="url" name="company_website" id="company_website" class="ae_input" value="<?php echo esc_url($company_website); ?>" />
+                        <fieldset class="fieldset-company_website half_field">
+                            <label class="ae_label"><?php esc_html_e('Employer Website', 'wp-job-manager'); ?></label>
+                            <input type="url" name="company_website" id="company_website" class="ae_input" value="<?php echo esc_url($company_website); ?>" readonly />
                         </fieldset>
                     </div>
 
@@ -404,11 +421,14 @@ class JobListingForm
         $job_location = isset($_POST['job_location']) ? intval($_POST['job_location']) : 0;
 
         // Determine if we are saving as a draft or publishing
-        // $post_status = isset($_POST['save_draft']) ? 'draft' : 'publish';
-        $post_status = 'draft'; // Default to draft
+        $post_status = 'publish'; // Default to draft
+
         if (isset($_POST['job_submit'])) {
-            $post_status = 'publish';
+            $post_status = 'publish'; // Set to publish if "Publish" button is clicked
+        } elseif (isset($_POST['save_draft'])) {
+            $post_status = 'draft'; // Explicitly set to draft if "Save Draft" button is clicked
         }
+
 
         // Prepare post data
         $post_data = [
@@ -425,6 +445,17 @@ class JobListingForm
         } else {
             $result = wp_insert_post($post_data);
         }
+
+        // Save company logo (based on employer selection)
+        if (isset($_POST['employer'])) {
+            $employer_id = intval($_POST['employer']);
+            $company_logo_id = get_field('company_logo', $employer_id); // Get the logo attachment ID from the employer CPT
+            if ($company_logo_id) {
+                update_post_meta($result, '_company_logo', $company_logo_id); // Save the logo ID as meta
+                set_post_thumbnail($result, $company_logo_id); // Set as featured image
+            }
+        }
+
 
         if (is_wp_error($result)) {
             wp_send_json_error(['message' => 'Error: ' . $result->get_error_message()]);
@@ -463,34 +494,10 @@ class JobListingForm
                 update_post_meta($result, '_job_location', $location_name);
             }
 
-
-            // Handle company logo (featured image)
-            if (!empty($_FILES['company_logo']['name'])) {
-                require_once(ABSPATH . 'wp-admin/includes/file.php');
-                require_once(ABSPATH . 'wp-admin/includes/image.php');
-                require_once(ABSPATH . 'wp-admin/includes/media.php');
-
-                // Upload the company logo and set it as the featured image
-                $company_logo_id = media_handle_upload('company_logo', $result);
-                if (is_wp_error($company_logo_id)) {
-                    wp_send_json_error(['message' => __('Company logo upload failed.', 'wp-job-manager')]);
-                    return;
-                } else {
-                    set_post_thumbnail($result, $company_logo_id);  // Set as featured image
-                }
-            } elseif ($job_id && isset($_POST['company_logo_current'])) {
-                // If no new logo is uploaded, keep the existing logo
-                set_post_thumbnail($job_id, intval($_POST['company_logo_current']));
-            }
-
-            // Return the current page URL instead of redirecting to the job page
-            // $current_page_url = esc_url_raw($_POST['_wp_http_referer']);
-            // wp_send_json_success(['message' => 'Job created/updated successfully!', 'redirect_url' => $current_page_url]);
-
             // Redirect to the same page, including the job ID in the URL
             $redirect_url = add_query_arg('job_id', $result, esc_url_raw($_POST['_wp_http_referer']));
             $status_message = $post_status === 'draft' ? 'Job saved as draft!' : 'Job published successfully!';
-            wp_send_json_success(['message' => 'Job saved successfully!', 'redirect_url' => $redirect_url]);
+            wp_send_json_success(['message' => $status_message, 'redirect_url' => $redirect_url]);
         }
 
         wp_die(); // Always end AJAX functions with wp_die()
@@ -514,6 +521,32 @@ class JobListingForm
             'ajax_url' => admin_url('admin-ajax.php'),
             'nonce'    => wp_create_nonce('job_listing_nonce_action'),
         ));
+    }
+
+    public function fetch_employer_details()
+    {
+        // Check the nonce
+        check_ajax_referer('job_listing_nonce_action', 'security');
+
+        $employer_id = intval($_POST['employer_id']);
+        if (!$employer_id) {
+            wp_send_json_error(['message' => 'Invalid Employer ID']);
+        }
+
+        // Retrieve ACF fields
+        $company_logo_id = get_field('company_logo', $employer_id); // This returns the attachment ID
+        $company_logo_url = $company_logo_id ? wp_get_attachment_image_url($company_logo_id, 'full') : '';
+        $company_name = get_field('company_name', $employer_id);
+        $company_website = get_field('website', $employer_id);
+
+        $response = [
+            'company_logo_id' => $company_logo_id,
+            'company_logo' => $company_logo_url,
+            'company_name' => $company_name,
+            'company_website' => $company_website,
+        ];
+
+        wp_send_json_success($response);
     }
 }
 
