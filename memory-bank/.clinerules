@@ -1,0 +1,65 @@
+# Cline Rules for Adventists Employment Plugin
+
+## Project Patterns
+
+### Code Organization
+- PHP classes follow the naming convention `class-{feature-name}.php`
+- Each feature has its own CSS file named `{feature-name}.css`
+- Each feature has its own JS file named `{feature-name}.js`
+- Templates follow the naming convention `{feature-name}-template.php`
+
+### WordPress Integration
+- Features are implemented as classes that register shortcodes
+- Each class is instantiated in the main plugin file
+- WordPress hooks are used for initialization and event handling
+- Custom post types are used for storing structured data
+
+### Form Handling
+- Forms are submitted via AJAX to prevent page reloads
+- Nonces are used for security validation
+- Form data is sanitized before storage
+- JSON responses provide feedback to the user
+
+### Logo Management
+- Organization logos are stored as ACF fields in employer profiles
+- Logos are retrieved via AJAX when an employer is selected
+- Logos are stored both as post meta and featured images
+- The employer dropdown triggers logo and company info retrieval
+
+## User Preferences
+
+### Documentation
+- Document all key functionality in the memory bank
+- Use mermaid diagrams to visualize system flows
+- Keep track of both working features and planned enhancements
+- Document the relationships between components
+
+### Code Style
+- Follow WordPress coding standards
+- Use clear, descriptive variable and function names
+- Organize code with logical separation of concerns
+- Comment complex logic and important decisions
+
+## Known Challenges
+
+### Integration Points
+- The plugin interacts with WordPress core functionality
+- ACF is used for custom fields in employer profiles
+- The plugin may need to work with various themes
+
+### Performance Considerations
+- Large logos may impact page load times
+- AJAX requests should be optimized
+- Database queries should be minimized
+
+## Tool Usage Patterns
+
+### Development Tools
+- Local WordPress development environment
+- Git for version control
+- Manual testing for feature verification
+
+### Debugging Approaches
+- WordPress debug logs for PHP errors
+- Browser console for JavaScript issues
+- AJAX response monitoring for form submission problems
