@@ -649,10 +649,30 @@ class JobListingForm
         wp_enqueue_style('jquery-ui');
 
         // Get Google Maps API key from job-filtering-plugin settings
-        $api_key = get_option('jfp_google_maps_api_key', 'AIzaSyBbymmPvtJkHoiX31edT8PeRV7yEDCzDG4');
+        $api_key = get_option('jfp_google_maps_api_key');
         
-        // Enqueue Google Maps API with Places library
-        wp_enqueue_script('google-maps', 'https://maps.googleapis.com/maps/api/js?key=' . $api_key . '&libraries=places', array(), null, true);
+        // Check if API key exists
+        if (empty($api_key)) {
+            // No API key found, add admin notice
+            add_action('admin_notices', function() {
+                echo '<div class="notice notice-error"><p>Google Maps API key is not set. Please configure it in <a href="' . admin_url('edit.php?post_type=job_listing&page=job-filtering-settings') . '">Job Filtering Settings</a>.</p></div>';
+            });
+            
+            // Also add a frontend notice for non-admin users
+            add_action('wp_footer', function() {
+                echo '<div style="background-color: #f8d7da; color: #721c24; padding: 10px; margin: 10px 0; border-radius: 5px;">
+                    <p><strong>Notice:</strong> Google Maps functionality is currently unavailable. Please contact the administrator.</p>
+                </div>';
+            });
+            
+            // Set to empty string to prevent JS errors
+            $api_key = '';
+        }
+        
+        // Enqueue Google Maps API with Places library only if we have an API key
+        if (!empty($api_key)) {
+            wp_enqueue_script('google-maps', 'https://maps.googleapis.com/maps/api/js?key=' . $api_key . '&libraries=places', array(), null, true);
+        }
         
         // Get country restrictions from job-filtering-plugin settings
         $country_restrictions = get_option('jfp_country_restrictions', array('au'));
