@@ -1,4 +1,48 @@
 jQuery(document).ready(function ($) {
+  // Initialize Google Maps Autocomplete for address field
+  if (typeof google !== 'undefined' && google.maps && google.maps.places) {
+    // Get country restrictions from PHP
+    const countryRestrictions = typeof jobFormAjax.country_restrictions !== 'undefined' ? 
+      jobFormAjax.country_restrictions : ['au']; // Default to Australia if not set
+    
+    // Create the autocomplete object with country restrictions
+    const autocomplete = new google.maps.places.Autocomplete(
+      document.getElementById('address'),
+      {
+        types: ['geocode'],
+        componentRestrictions: { country: countryRestrictions }
+      }
+    );
+    
+    // When the user selects an address from the dropdown, populate the address field
+    autocomplete.addListener('place_changed', function() {
+      const place = autocomplete.getPlace();
+      
+      if (!place.geometry) {
+        console.log("No details available for input: '" + place.name + "'");
+        return;
+      }
+      
+      // Get the location coordinates
+      const lat = place.geometry.location.lat();
+      const lng = place.geometry.location.lng();
+      
+      // Set the coordinates in the hidden field
+      $("#latitude_longitude").val(JSON.stringify({
+        lat: lat,
+        lng: lng
+      }));
+      
+      // Make sure the address field has the formatted address
+      $("#address").val(place.formatted_address);
+      
+      console.log("Selected place: ", place.formatted_address);
+      console.log("Coordinates: ", lat, lng);
+    });
+  } else {
+    console.error("Google Maps Places API not loaded");
+  }
+
   // Form submission logic
   $("#submit-job-form").on("submit", function (e) {
     e.preventDefault(); // Prevent the default form submission

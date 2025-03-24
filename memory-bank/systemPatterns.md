@@ -8,29 +8,41 @@ flowchart TD
     Main[Main Plugin Class] --> SC[Shortcode Registration]
     Main --> Auth[Authentication Handling]
     Main --> Redir[Redirection Logic]
+    Main --> Logout[Custom Logout]
     
     SC --> JF[Job Form]
     SC --> RF[Resume Form]
     SC --> BF[Blog Filter]
     SC --> RP[Related Posts]
     SC --> TB[Top Blogs]
+    SC --> SF[Signup Form]
     
     JF --> Templates[Templates]
     RF --> Templates
     BF --> Templates
     RP --> Templates
     TB --> Templates
+    SF --> Templates
     
     JF --> CSS[CSS Styling]
     RF --> CSS
     BF --> CSS
     RP --> CSS
     TB --> CSS
+    SF --> CSS
     
     JF --> JS[JavaScript]
     RF --> JS
     BF --> JS
     TB --> JS
+    SF --> JS
+    
+    JF --> AJAX[AJAX Handlers]
+    RF --> AJAX
+    BF --> AJAX
+    
+    JF --> Maps[Google Maps Integration]
+    Maps --> ACF[ACF Google Maps Field]
 ```
 
 ## Key Technical Decisions
@@ -110,3 +122,36 @@ flowchart TD
    - Models: WordPress posts and meta data
    - Views: Template files in the templates directory
    - Controllers: PHP classes in the includes directory
+
+## Google Maps Integration
+
+The job form includes Google Maps integration for address selection and geocoding:
+
+```mermaid
+flowchart TD
+    Input[Address Input Field] -->|User Types| Autocomplete[Google Maps Autocomplete]
+    Autocomplete -->|Place Selected| Extract[Extract Address & Coordinates]
+    Extract -->|Store in Hidden Field| Form[Form Data]
+    Form -->|Submit| AJAX[AJAX Handler]
+    AJAX -->|Format Data| ACF[ACF Google Maps Field]
+    ACF -->|Store| Database[WordPress Database]
+    Database -->|Retrieve| Backend[WordPress Backend]
+    Backend -->|Render| Map[Google Map Display]
+```
+
+### Implementation Details
+
+1. **Frontend Implementation**:
+   - Uses Google Maps Places Autocomplete API for address suggestions
+   - Extracts formatted address and coordinates (latitude/longitude) when a place is selected
+   - Stores coordinates in a hidden field for submission
+
+2. **Data Storage**:
+   - Saves data in the format expected by ACF Google Maps field
+   - Combines address text and coordinates in a structured array: `{address: "...", lat: "...", lng: "..."}`
+   - This format ensures proper rendering of the map in the WordPress backend
+
+3. **Data Retrieval**:
+   - When editing an existing job, retrieves the ACF Google Maps field data
+   - Extracts the address for display in the input field
+   - Formats coordinates for the hidden field

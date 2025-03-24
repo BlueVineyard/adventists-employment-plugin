@@ -7,6 +7,8 @@
 - Each feature has its own CSS file named `{feature-name}.css`
 - Each feature has its own JS file named `{feature-name}.js`
 - Templates follow the naming convention `{feature-name}-template.php`
+- Each component is self-contained with its own enqueue methods for styles and scripts
+- AJAX handlers are defined within the class that uses them
 
 ### WordPress Integration
 - Features are implemented as classes that register shortcodes
@@ -16,15 +18,39 @@
 
 ### Form Handling
 - Forms are submitted via AJAX to prevent page reloads
-- Nonces are used for security validation
-- Form data is sanitized before storage
-- JSON responses provide feedback to the user
+- Nonces are used for security validation with the 'security' parameter
+- Form data is sanitized before storage using WordPress sanitization functions
+- JSON responses provide feedback to the user with success/error messages
+- Draft/publish status options are provided for both job and resume forms
+- File uploads are handled with wp_handle_upload for resumes and photos
+
+### Google Maps Integration
+- Google Maps Places Autocomplete is used for address selection in the job form
+- Address and coordinates are stored in ACF Google Maps field
+- Data must be formatted as `{address: "...", lat: "...", lng: "..."}` for ACF compatibility
+- When retrieving data, extract address and coordinates separately for form fields
+- Always ensure the formatted address from Google is used, not the user's input
 
 ### Logo Management
 - Organization logos are stored as ACF fields in employer profiles
 - Logos are retrieved via AJAX when an employer is selected
 - Logos are stored both as post meta and featured images
 - The employer dropdown triggers logo and company info retrieval
+
+### Resume Form System
+- Dynamic sections for experience, education, and certifications
+- Template-based approach for repeatable form sections
+- Skills management with autocomplete and tag-based interface
+- Date range selection using daterangepicker library
+- File uploads for candidate photos and resume documents
+- Form state preservation between edits
+
+### Blog Filtering System
+- Category-based filtering with AJAX pagination
+- Active state management for selected categories
+- Dynamic content loading without page refresh
+- Responsive grid layout for blog posts
+- Excerpt generation with word count limits
 
 ## User Preferences
 

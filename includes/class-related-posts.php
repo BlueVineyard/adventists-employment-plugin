@@ -39,10 +39,25 @@ class RelatedPosts
             'post_type' => $post_type, // Change this if using a custom post type
             'posts_per_page' => $posts_per_page,
             'post__not_in' => [$post_id],
-            'category__in' => $categories,
             'orderby' => 'DESC', // Random order for variety
             'post_status' => 'publish',
         ];
+
+        if ($post_type === 'job_listing') {
+            $company_name = get_post_meta($post_id, '_company_name', true);
+            if ($company_name) {
+                $args['meta_query'] = [
+                    [
+                        'key' => '_company_name',
+                        'value' => $company_name,
+                        'compare' => '=',
+                    ],
+                ];
+            }
+        } else {
+            $categories = wp_get_post_categories($post_id);
+            $args['category__in'] = $categories;
+        }
 
         return new WP_Query($args);
     }

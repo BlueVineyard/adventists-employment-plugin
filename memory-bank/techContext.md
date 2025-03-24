@@ -18,7 +18,16 @@
 - **WordPress TinyMCE**: Rich text editor integration for job descriptions
 
 ### Libraries & Dependencies
-- **jQuery UI**: For datepicker and other UI components
+- **jQuery UI**: For datepicker, autocomplete, and other UI components
+- **Google Maps API**: For address selection and geocoding in job listings
+  - Uses Places library for address autocomplete
+  - Integrated with ACF Google Maps field for backend display
+  - Requires proper data formatting: `{address: "...", lat: "...", lng: "..."}`
+- **Advanced Custom Fields (ACF)**: For custom field management
+  - ACF Google Maps field used for storing and displaying location data
+  - Provides interactive map display in the WordPress admin
+- **Moment.js**: For date handling in resume forms
+- **Daterangepicker**: For date range selection in resume experience entries
 - **wp-job-manager-term-multiselect**: For taxonomy term selection
 - **wp-job-manager-datepicker**: For date selection fields
 
@@ -29,30 +38,42 @@
 adventists-employment-plugin/
 ├── adventists-employment-plugin.php  # Main plugin file
 ├── css/                             # Stylesheet directory
-│   ├── blog-filter.css
-│   ├── job-form.css
-│   ├── related-posts.css
-│   ├── resume-form.css
-│   ├── shortcode1.css
-│   └── sign-up-form.css
+│   ├── blog-filter.css              # Styles for blog filtering
+│   ├── class-job-form.css           # Additional job form styles
+│   ├── job-form.css                 # Styles for job submission form
+│   ├── related-posts.css            # Styles for related posts display
+│   ├── resume-form.css              # Styles for resume submission form
+│   ├── shortcode1.css               # Styles for shortcode1
+│   ├── sign-up-form.css             # Styles for user signup forms
+│   └── top-blogs.css                # Styles for top blogs display
 ├── includes/                        # PHP class files
-│   ├── class-blog-filter.php
-│   ├── class-job-form.php
-│   ├── class-related-posts.php
-│   ├── class-resume-form.php
-│   ├── class-shortcode1.php
-│   └── class-signup-form.php
+│   ├── class-blog-filter.php        # Blog filtering functionality
+│   ├── class-job-form.php           # Job submission form handling
+│   ├── class-related-posts.php      # Related posts display
+│   ├── class-resume-form.php        # Resume submission form handling
+│   ├── class-shortcode1.php         # Generic shortcode implementation
+│   ├── class-signup-form.php        # User registration functionality
+│   └── class-top-blogs.php          # Top blogs display
 ├── js/                              # JavaScript files
-│   ├── blog-filter.js
-│   ├── custom-logout.js
-│   ├── job-form.js
-│   ├── resume-form.js
-│   └── sign-up-form.js
+│   ├── blog-filter.js               # Blog filtering interactivity
+│   ├── custom-logout.js             # Custom logout functionality
+│   ├── job-form.js                  # Job form validation and submission
+│   ├── resume-form.js               # Resume form with dynamic sections
+│   ├── sign-up-form.js              # Signup form handling
+│   └── top-blogs.js                 # Top blogs functionality
+├── memory-bank/                     # Documentation directory
+│   ├── .clinerules                  # Project-specific patterns
+│   ├── activeContext.md             # Current work focus
+│   ├── productContext.md            # Product purpose and goals
+│   ├── progress.md                  # Implementation status
+│   ├── projectbrief.md              # Project overview
+│   ├── systemPatterns.md            # Architecture documentation
+│   └── techContext.md               # Technical context
 └── templates/                       # Template files
-    ├── blog-filter-template.php
-    ├── related-posts-template.php
-    ├── shortcode1-template.php
-    └── top-blogs-template.php
+    ├── blog-filter-template.php     # Blog filter display template
+    ├── related-posts-template.php   # Related posts display template
+    ├── shortcode1-template.php      # Generic shortcode template
+    └── top-blogs-template.php       # Top blogs display template
 ```
 
 ### Development Workflow
@@ -97,7 +118,16 @@ adventists-employment-plugin/
   - Application tracking systems
 
 ## Technical Debt & Considerations
-- Some CSS could benefit from standardization across components
-- JavaScript could be further modularized
-- Additional error handling and validation could improve robustness
-- Mobile responsiveness should be reviewed and enhanced
+- **Form Validation**: Client-side validation could be enhanced for better user feedback
+- **Mobile Responsiveness**: Several components need optimization for mobile devices
+- **JavaScript Organization**: Resume form JavaScript is complex and could benefit from modularization
+- **CSS Standardization**: Styles could be more consistent across components
+- **Error Handling**: More comprehensive error handling for AJAX requests
+- **Performance Optimization**: 
+  - Large logos and images could be optimized
+  - AJAX requests could be optimized or batched
+  - Database queries could be optimized for large datasets
+- **Security Enhancements**:
+  - Additional sanitization for form inputs
+  - More comprehensive capability checks
+  - Enhanced file upload validation
