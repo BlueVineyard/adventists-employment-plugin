@@ -14,7 +14,7 @@ The memory bank has been updated with a comprehensive review of all plugin compo
 - Blog filtering and content display features
 - User authentication and role management
 - Fixed ACF Google Maps field rendering issue in the job form by properly formatting and saving the address and coordinates data
-- Addressed Google Maps API key security issue by removing hardcoded API key and implementing proper API key handling with graceful error management
+g- Addressed Google Maps API key security issue by removing hardcoded API key and implementing proper API key handling with graceful error management
 
 ## Active Decisions and Considerations
 

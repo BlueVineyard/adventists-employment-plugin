@@ -46,7 +46,6 @@ class JobListingForm
         $job_description = $job_id ? get_post_meta($job_id, '_job_description', true) : '';
         $what_do_we_offer = $job_id ? get_post_meta($job_id, '_what_do_we_offer', true) : '';
         $who_are_we = $job_id ? get_post_meta($job_id, '_who_are_we', true) : '';
-        $key_responsibilities = $job_id ? get_post_meta($job_id, '_key_responsibilities', true) : '';
         $enquiries_to = $job_id ? get_post_meta($job_id, '_enquiries_to', true) : '';
         $how_to_apply = $job_id ? get_post_meta($job_id, '_how_to_apply', true) : '';
         $company_logo = $job_id ? get_post_meta($job_id, '_company_logo', true) : '';
@@ -189,11 +188,6 @@ class JobListingForm
                 </fieldset>
 
 
-                <!-- Job Salary Field -->
-                <!-- <fieldset class="fieldset-job_salary fieldset-type-salary half_field">
-                            <label for="job_salary" class="ae_label"><?php esc_html_e('Job Salary', 'wp-job-manager'); ?></label>
-                            <input type="text" name="job_salary" class="ae_input" id="job_salary" value="<?php echo esc_attr($job_salary); ?>" />
-                        </fieldset> -->
 
                 <!-- Job Type Select Field -->
                 <fieldset class="fieldset-job_type fieldset-type-select half_field">
@@ -215,28 +209,11 @@ class JobListingForm
                     </select>
                 </fieldset>
 
-                <!-- Job Category Select Field -->
-                <!-- <fieldset class="fieldset-job_category fieldset-type-select half_field">
-                            <label for="job_category" class="ae_label"><?php esc_html_e('Category of Work', 'wp-job-manager'); ?></label>
-                            <select name="job_category" id="job_category" class="ae_input">
-                                <option value=""><?php esc_html_e('Select Job Category', 'wp-job-manager'); ?></option>
-                                <?php
-                                $job_categories = get_terms(['taxonomy' => 'job_listing_category', 'hide_empty' => false]);
-                                foreach ($job_categories as $job_category) {
-                                ?>
-                                    <option value="<?php echo esc_attr($job_category->term_id); ?>" <?php selected($selected_job_category, $job_category->term_id); ?>>
-                                        <?php echo esc_html($job_category->name); ?>
-                                    </option>
-                                <?php
-                                }
-                                ?>
-                            </select>
-                        </fieldset> -->
 
-                <!-- Application Period Field -->
+                <!-- Application close date Field -->
                 <fieldset class="fieldset-application_period fieldset-type-date half_field">
                     <label for="application_period"
-                        class="ae_label"><?php esc_html_e('Application Period', 'wp-job-manager'); ?></label>
+                        class="ae_label"><?php esc_html_e('Application Close Date', 'wp-job-manager'); ?></label>
                     <input type="text" class="input-date job-manager-datepicker ae_input" name="application_period"
                         id="application_period"
                         placeholder="<?php esc_attr_e('Select application period', 'wp-job-manager'); ?>"
@@ -248,8 +225,11 @@ class JobListingForm
                     <label for="apply_externally" class="ae_label"
                         style="display: flex;align-items: center;column-gap: 8px;">
                         <?php esc_html_e('Apply Externally', 'wp-job-manager'); ?>
-                        <span data-tool_tip="This is a tooltip" class="tool_tip"
-                            style="display: flex;align-items: center;">
+                        <span data-tool_tip="Select 'Yes' if you want applicants to apply through an external website
+                            or email address (e.g., your company’s career page or a direct email). Note: If you
+                            select 'Yes', it is mandatory to provide a website link or an email address. If you
+                            select 'No', applicants will apply directly through the Adventist Employment website."
+                            class="tool_tip" style="display: flex;align-items: center;">
                             <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
                                 fill="#000">
                                 <path
@@ -279,7 +259,7 @@ class JobListingForm
                 <!-- Job Description Field (WYSIWYG Editor) -->
                 <fieldset class="fieldset-job_description fieldset-type-description">
                     <label for="job_description" class="ae_label"
-                        style="margin-bottom: -30px;"><?php esc_html_e('About The Role', 'wp-job-manager'); ?></label>
+                        style="margin-bottom: -30px;"><?php esc_html_e('Vacancy Details', 'wp-job-manager'); ?></label>
                     <?php
                             wp_editor(
                                 $job_description,          // The content to display in the editor.
@@ -301,8 +281,57 @@ class JobListingForm
 
             <div class="spacer-20"></div>
 
+            <div id="companyDetails" class="ae_form_card">
+                <h4 class="ae_form_card-title">Company Details</h4>
+
+                <!-- Employer Dropdown -->
+                <fieldset class="fieldset-employer">
+                    <label for="employer"
+                        class="ae_label"><?php esc_html_e('Select Employer', 'wp-job-manager'); ?></label>
+                    <select name="employer" id="employer" class="ae_input">
+                        <option value=""><?php esc_html_e('Select an Employer', 'wp-job-manager'); ?></option>
+                        <?php
+                                $employers = get_posts([
+                                    'post_type'   => 'employer-dashboard',
+                                    'post_status' => 'publish',
+                                    'numberposts' => -1,
+                                ]);
+                                foreach ($employers as $employer) {
+                                    $employer_name = get_field('company_name', $employer->ID);
+                                    echo '<option value="' . esc_attr($employer->ID) . '">' . esc_html($employer_name) . '</option>';
+                                }
+                                ?>
+                    </select>
+                </fieldset>
+
+                <!-- Company Logo Upload Field -->
+                <fieldset class="fieldset-company_logo">
+                    <label class="ae_label"><?php esc_html_e('Employer Logo', 'wp-job-manager'); ?></label>
+                    <div id="company_logo_preview">
+                        <?php
+                                if (has_post_thumbnail($job_id)) {
+                                    echo get_the_post_thumbnail($job_id, 'full');
+                                    echo '<input type="hidden" name="company_logo_current" value="' . get_post_thumbnail_id($job_id) . '" />';
+                                }
+                                ?>
+                    </div>
+                </fieldset>
+                <fieldset class="fieldset-company_name half_field">
+                    <label class="ae_label"><?php esc_html_e('Employer Name', 'wp-job-manager'); ?></label>
+                    <input type="text" name="company_name" id="company_name" class="ae_input"
+                        value="<?php echo esc_attr($company_name); ?>" readonly />
+                </fieldset>
+                <fieldset class="fieldset-company_website half_field">
+                    <label class="ae_label"><?php esc_html_e('Employer Website', 'wp-job-manager'); ?></label>
+                    <input type="url" name="company_website" id="company_website" class="ae_input"
+                        value="<?php echo esc_url($company_website); ?>" readonly />
+                </fieldset>
+            </div>
+
+            <div class="spacer-20"></div>
+
             <div id="whoAreWe" class="ae_form_card">
-                <h4 class="ae_form_card-title">Criterias</h4>
+                <h4 class="ae_form_card-title">Selection Criteria</h4>
                 <!-- Essential Criteria Field (WYSIWYG Editor) -->
                 <fieldset class="fieldset-who_are_we fieldset-type-description">
                     <label for="who_are_we" class="ae_label"
@@ -335,32 +364,6 @@ class JobListingForm
                                 'what_do_we_offer',         // The ID of the textarea element.
                                 array(
                                     'textarea_name' => 'what_do_we_offer', // The name attribute of the textarea.
-                                    'textarea_rows' => 14,                 // Number of rows in the editor.
-                                    'media_buttons' => false,             // Hide "Add Media" button.
-                                    'tinymce'       => array(
-                                        'toolbar1' => 'formatselect,bold,italic,underline,bullist,numlist,link,unlink', // Add 'formatselect' for paragraphs/headings.
-                                        'toolbar2' => 'strikethrough,hr,forecolor,pastetext,removeformat,charmap,outdent,indent,undo,redo,wp_help',                  // Hide second toolbar row.
-                                        'block_formats' => 'Paragraph=p;Heading 1=h1;Heading 2=h2;Heading 3=h3;Heading 4=h4;Heading 5=h5;Heading 6=h6;', // Specify available formats.
-                                    ),
-                                )
-                            );
-                            ?>
-                </fieldset>
-            </div>
-            <div class="spacer-20"></div>
-
-            <div id="responsibilities" class="ae_form_card">
-                <h4 class="ae_form_card-title">Other Information</h4>
-                <!-- Other Information Field (WYSIWYG Editor) -->
-                <fieldset class="fieldset-key_responsibilities fieldset-type-description">
-                    <label for="key_responsibilities" class="ae_label"
-                        style="margin-bottom: -30px;"><?php esc_html_e('Description', 'wp-job-manager'); ?></label>
-                    <?php
-                            wp_editor(
-                                $key_responsibilities,          // The content to display in the editor.
-                                'key_responsibilities',         // The ID of the textarea element.
-                                array(
-                                    'textarea_name' => 'key_responsibilities', // The name attribute of the textarea.
                                     'textarea_rows' => 14,                 // Number of rows in the editor.
                                     'media_buttons' => false,             // Hide "Add Media" button.
                                     'tinymce'       => array(
@@ -426,55 +429,6 @@ class JobListingForm
                 </fieldset>
             </div>
 
-            <div class="spacer-20"></div>
-
-            <div id="companyDetails" class="ae_form_card">
-                <h4 class="ae_form_card-title">Company Details</h4>
-
-                <!-- Employer Dropdown -->
-                <fieldset class="fieldset-employer">
-                    <label for="employer"
-                        class="ae_label"><?php esc_html_e('Select Employer', 'wp-job-manager'); ?></label>
-                    <select name="employer" id="employer" class="ae_input">
-                        <option value=""><?php esc_html_e('Select an Employer', 'wp-job-manager'); ?></option>
-                        <?php
-                                $employers = get_posts([
-                                    'post_type'   => 'employer-dashboard',
-                                    'post_status' => 'publish',
-                                    'numberposts' => -1,
-                                ]);
-                                foreach ($employers as $employer) {
-                                    $employer_name = get_field('company_name', $employer->ID);
-                                    echo '<option value="' . esc_attr($employer->ID) . '">' . esc_html($employer_name) . '</option>';
-                                }
-                                ?>
-                    </select>
-                </fieldset>
-
-                <!-- Company Logo Upload Field -->
-                <fieldset class="fieldset-company_logo">
-                    <label class="ae_label"><?php esc_html_e('Employer Logo', 'wp-job-manager'); ?></label>
-                    <div id="company_logo_preview">
-                        <?php
-                                if (has_post_thumbnail($job_id)) {
-                                    echo get_the_post_thumbnail($job_id, 'full');
-                                    echo '<input type="hidden" name="company_logo_current" value="' . get_post_thumbnail_id($job_id) . '" />';
-                                }
-                                ?>
-                    </div>
-                </fieldset>
-                <fieldset class="fieldset-company_name half_field">
-                    <label class="ae_label"><?php esc_html_e('Employer Name', 'wp-job-manager'); ?></label>
-                    <input type="text" name="company_name" id="company_name" class="ae_input"
-                        value="<?php echo esc_attr($company_name); ?>" readonly />
-                </fieldset>
-                <fieldset class="fieldset-company_website half_field">
-                    <label class="ae_label"><?php esc_html_e('Employer Website', 'wp-job-manager'); ?></label>
-                    <input type="url" name="company_website" id="company_website" class="ae_input"
-                        value="<?php echo esc_url($company_website); ?>" readonly />
-                </fieldset>
-            </div>
-
 
             <!-- Save and Cancel Buttons -->
             <div class="add_job-form-btns">
@@ -496,11 +450,10 @@ class JobListingForm
     </div>
     <div class="add_job-nav">
         <a href="#" class="add_job-nav-link add_job-jobDetails">Job Details</a>
+        <a href="#" class="add_job-nav-link add_job-companyDetails">Company Details</a>
         <a href="#" class="add_job-nav-link add_job-whoAreWe">Criterias</a>
-        <a href="#" class="add_job-nav-link add_job-responsibilities">Other Information</a>
         <a href="#" class="add_job-nav-link add_job-responsibilities">Enquiries To</a>
         <a href="#" class="add_job-nav-link add_job-howToApply">How to Apply</a>
-        <a href="#" class="add_job-nav-link add_job-companyDetails">Company Details</a>
     </div>
 </div>
 <?php
@@ -520,7 +473,6 @@ class JobListingForm
 
         $what_do_we_offer = wp_kses_post($_POST['what_do_we_offer']);
         $who_are_we = wp_kses_post($_POST['who_are_we']);
-        $key_responsibilities = wp_kses_post($_POST['key_responsibilities']);
         $enquiries_to = wp_kses_post($_POST['enquiries_to']);
         $how_to_apply = wp_kses_post($_POST['how_to_apply']);
 
@@ -582,7 +534,6 @@ class JobListingForm
 
             update_post_meta($result, '_what_do_we_offer', $what_do_we_offer);
             update_post_meta($result, '_who_are_we', $who_are_we);
-            update_post_meta($result, '_key_responsibilities', $key_responsibilities);
             update_post_meta($result, '_enquiries_to', $enquiries_to);
             update_post_meta($result, '_how_to_apply', $how_to_apply);
 
@@ -669,9 +620,31 @@ class JobListingForm
             $api_key = '';
         }
         
-        // Enqueue Google Maps API with Places library only if we have an API key
+        // Check if another plugin has already enqueued Google Maps API
+        global $wp_scripts;
+        $maps_api_enqueued = false;
+        $maps_handle = '';
+        
+        if (isset($wp_scripts->registered)) {
+            foreach ($wp_scripts->registered as $handle => $script) {
+                // Check if any script URL contains maps.googleapis.com
+                if (isset($script->src) && strpos($script->src, 'maps.googleapis.com') !== false) {
+                    $maps_api_enqueued = true;
+                    $maps_handle = $handle;
+                    break;
+                }
+            }
+        }
+        
+        // Register or enqueue Google Maps API
         if (!empty($api_key)) {
-            wp_enqueue_script('google-maps', 'https://maps.googleapis.com/maps/api/js?key=' . $api_key . '&libraries=places', array(), null, true);
+            if (!$maps_api_enqueued) {
+                // If not already enqueued, register and enqueue our own
+                wp_enqueue_script('google-maps', 'https://maps.googleapis.com/maps/api/js?key=' . $api_key . '&libraries=places', array(), null, true);
+            } else if ($maps_handle !== 'google-maps') {
+                // If enqueued with a different handle, register ours as a dependency to that one
+                wp_register_script('google-maps', false, array($maps_handle), null, true);
+            }
         }
         
         // Get country restrictions from job-filtering-plugin settings
