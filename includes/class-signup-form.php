@@ -135,8 +135,18 @@ class AE_Signup_Form
 
     public function enqueue_assets()
     {
-        wp_enqueue_style('sign-up-form-css', plugin_dir_url(__FILE__) . '../css/sign-up-form.css');
-        wp_enqueue_script('sign-up-form-js', plugin_dir_url(__FILE__) . '../js/sign-up-form.js', array('jquery'), null, true);
+        // Get the main plugin instance
+        global $adventists_employment_plugin;
+
+        // Only enqueue assets if the shortcode is used on this page
+        if (
+            !isset($adventists_employment_plugin) || !method_exists($adventists_employment_plugin, 'is_shortcode_used') ||
+            $adventists_employment_plugin->is_shortcode_used('ae_signup_form')
+        ) {
+
+            wp_enqueue_style('sign-up-form-css', plugin_dir_url(__FILE__) . '../css/sign-up-form.css');
+            wp_enqueue_script('sign-up-form-js', plugin_dir_url(__FILE__) . '../js/sign-up-form.js', array('jquery'), null, true);
+        }
     }
 }
 

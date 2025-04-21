@@ -155,13 +155,23 @@ class BlogFilter
      */
     public function enqueue_assets()
     {
-        wp_enqueue_style('blog-filter-css', plugin_dir_url(__FILE__) . '../css/blog-filter.css');
-        wp_enqueue_script('blog-filter-js', plugin_dir_url(__FILE__) . '../js/blog-filter.js', ['jquery'], null, true);
+        // Get the main plugin instance
+        global $adventists_employment_plugin;
 
-        // Pass AJAX URL to JavaScript
-        wp_localize_script('blog-filter-js', 'blogFilterParams', [
-            'ajax_url' => admin_url('admin-ajax.php'),
-        ]);
+        // Only enqueue assets if the shortcode is used on this page
+        if (
+            !isset($adventists_employment_plugin) || !method_exists($adventists_employment_plugin, 'is_shortcode_used') ||
+            $adventists_employment_plugin->is_shortcode_used('blog_filter')
+        ) {
+
+            wp_enqueue_style('blog-filter-css', plugin_dir_url(__FILE__) . '../css/blog-filter.css');
+            wp_enqueue_script('blog-filter-js', plugin_dir_url(__FILE__) . '../js/blog-filter.js', ['jquery'], null, true);
+
+            // Pass AJAX URL to JavaScript
+            wp_localize_script('blog-filter-js', 'blogFilterParams', [
+                'ajax_url' => admin_url('admin-ajax.php'),
+            ]);
+        }
     }
 
     /**

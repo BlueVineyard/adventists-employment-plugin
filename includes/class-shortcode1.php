@@ -18,10 +18,18 @@ class Shortcode1
 
     public function enqueue_assets()
     {
-        // if (has_shortcode(get_post()->post_content, 'shortcode1')) {
-        wp_enqueue_style('shortcode1-css', plugin_dir_url(__FILE__) . '../css/shortcode1.css');
-        wp_enqueue_script('shortcode1-js', plugin_dir_url(__FILE__) . '../js/shortcode1.js', array('jquery'), null, true);
-        // }
+        // Get the main plugin instance
+        global $adventists_employment_plugin;
+
+        // Only enqueue assets if the shortcode is used on this page
+        if (
+            !isset($adventists_employment_plugin) || !method_exists($adventists_employment_plugin, 'is_shortcode_used') ||
+            $adventists_employment_plugin->is_shortcode_used('shortcode1')
+        ) {
+
+            wp_enqueue_style('shortcode1-css', plugin_dir_url(__FILE__) . '../css/shortcode1.css');
+            wp_enqueue_script('shortcode1-js', plugin_dir_url(__FILE__) . '../js/shortcode1.js', array('jquery'), null, true);
+        }
     }
 }
 

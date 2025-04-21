@@ -82,7 +82,17 @@ class RelatedPosts
 
     public function enqueue_assets()
     {
-        wp_enqueue_style('related-posts-css', plugin_dir_url(__FILE__) . '../css/related-posts.css');
+        // Get the main plugin instance
+        global $adventists_employment_plugin;
+
+        // Only enqueue assets if the shortcode is used on this page
+        if (
+            !isset($adventists_employment_plugin) || !method_exists($adventists_employment_plugin, 'is_shortcode_used') ||
+            $adventists_employment_plugin->is_shortcode_used('related_posts')
+        ) {
+
+            wp_enqueue_style('related-posts-css', plugin_dir_url(__FILE__) . '../css/related-posts.css');
+        }
     }
 }
 

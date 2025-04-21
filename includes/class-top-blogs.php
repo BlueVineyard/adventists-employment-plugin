@@ -27,8 +27,18 @@ class TopBlogs
 
     public function enqueue_assets()
     {
-        wp_enqueue_style('top-blogs-css', plugin_dir_url(__FILE__) . '../css/top-blogs.css');
-        wp_enqueue_script('top-blogs-js', plugin_dir_url(__FILE__) . '../js/top-blogs.js', array('jquery'), null, true);
+        // Get the main plugin instance
+        global $adventists_employment_plugin;
+
+        // Only enqueue assets if the shortcode is used on this page
+        if (
+            !isset($adventists_employment_plugin) || !method_exists($adventists_employment_plugin, 'is_shortcode_used') ||
+            $adventists_employment_plugin->is_shortcode_used('top_blogs')
+        ) {
+
+            wp_enqueue_style('top-blogs-css', plugin_dir_url(__FILE__) . '../css/top-blogs.css');
+            wp_enqueue_script('top-blogs-js', plugin_dir_url(__FILE__) . '../js/top-blogs.js', array('jquery'), null, true);
+        }
     }
 }
 
